@@ -20,7 +20,7 @@ const questions = [
     {
         type: 'input',
         name: 'filesShown',
-        message: 'Number of files to show:',
+        message: 'Number of files to show: (0 for all)',
         default: 0,
         validate: value => {
             var valid = !isNaN(parseInt(value)) && value > -1;
@@ -38,7 +38,7 @@ function main() {
     });
 }
 
-function searchFiles(path/*, limit*/) {
+function searchFiles(path, limit) {
 
     let mg = new Glob(path + '/**/*.*', { nodir: true }, (err, res) => {
         if (err) {
@@ -67,9 +67,8 @@ function searchFiles(path/*, limit*/) {
 
     let counter = 0;
     mg.on('match', filename => {
-        if (limit == 0) return;
-
-        if (++counter == limit){
+        ++counter;
+        if (limit > 0 && counter == limit) {
             mg.abort();
         }
 
