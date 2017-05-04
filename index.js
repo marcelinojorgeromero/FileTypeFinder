@@ -81,7 +81,7 @@ function searchFiles(path, limit) {
 
         if (mimeType === '') console.log(`${colors.bg.White}${colors.fg.Red}Mime not found for ${filename}!`, colors.Reset);
 
-        console.log(`${counter}) ${colors.fg.Magenta}${filename}${colors.fg.White}: ${colors.fg.Blue}${JSON.stringify(fileTypeObj)}${colors.fg.White}, Is video?: ${mimeType.startsWith('video') ? 'Yes' : 'No'}`, colors.Reset);
+        console.log(`${counter}) ${colors.fg.Magenta}${filename}${colors.fg.White}: ${colors.fg.Blue}${JSON.stringify(fileTypeObj)}${colors.fg.White}, Is video?: ${mimeType.startsWith('video') ? colors.fg.Green + 'Yes' : colors.fg.Red + 'No'}`, colors.Reset);
     });
 }
 
