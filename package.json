@@ -1,0 +1,17 @@
+{
+  "name": "file-type-finder",
+  "version": "1.0.0",
+  "description": "Finds the file type of files",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Marcelino Jorge Romero Karavia",
+  "license": "ISC",
+  "dependencies": {
+    "file-type": "^4.2.0",
+    "glob": "^7.1.1",
+    "inquirer": "^3.0.6",
+    "read-chunk": "^2.0.0"
+  }
+}
