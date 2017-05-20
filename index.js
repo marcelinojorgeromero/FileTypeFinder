@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const readChunk = require('read-chunk');
 const fileType = require('file-type');
@@ -52,16 +53,16 @@ function searchFiles(path, limit) {
         }
 
         res.forEach((value, index) => {
-            let fileTypeObj = findFileType(value);
-            if (fileTypeObj == null) {
+            let mimeFileTypeObj = findMimeFileType(value);
+            if (mimeFileTypeObj == null) {
                 console.log(`${index}) ${colors.bg.White}${colors.fg.Red}${value} file type couldn't be found!`, colors.Reset);
                 return;
             }
-            let mimeType = fileTypeObj.hasOwnProperty('mime') ? fileTypeObj['mime'] : '';
+            let mimeType = mimeFileTypeObj.hasOwnProperty('mime') ? mimeFileTypeObj['mime'] : '';
 
             if (mimeType === '') console.log(`${colors.bg.White}${colors.fg.Red}Mime not found for ${value}!`, colors.Reset);
 
-            console.log(`${index + 1}) ${colors.fg.Magenta}${value}${colors.fg.White}: ${colors.fg.Blue}${JSON.stringify(fileTypeObj)}${colors.fg.White}, Is video?: ${mimeType.startsWith('video') ? 'Yes' : 'No'}`, colors.Reset);
+            console.log(`${index + 1}) ${colors.fg.Magenta}${value}${colors.fg.White}: ${colors.fg.Blue}${JSON.stringify(mimeFileTypeObj)}${colors.fg.White}, Is video?: ${mimeType.startsWith('video') ? 'Yes' : 'No'}`, colors.Reset);
         });*/
     });
 
@@ -72,22 +73,26 @@ function searchFiles(path, limit) {
             mg.abort();
         }
 
-        let fileTypeObj = findFileType(filename);
-        if (fileTypeObj == null) {
-            console.log(`${counter}) ${colors.bg.White}${colors.fg.Red}${filename} file type couldn't be found!`, colors.Reset);
+        let mimeFileTypeObj = findMimeFileType(filename);
+        if (mimeFileTypeObj == null) {
+            console.log(`${counter}) ${colors.bg.White}${colors.fg.Red}${filename} mime file info couldn't be found but the extension is "${findFileExtension(filename)}".`, colors.Reset);
             return;
         }
-        let mimeType = fileTypeObj.hasOwnProperty('mime') ? fileTypeObj['mime'] : '';
+        let mimeType = mimeFileTypeObj.hasOwnProperty('mime') ? mimeFileTypeObj['mime'] : '';
 
         if (mimeType === '') console.log(`${colors.bg.White}${colors.fg.Red}Mime not found for ${filename}!`, colors.Reset);
 
-        console.log(`${counter}) ${colors.fg.Magenta}${filename}${colors.fg.White}: ${colors.fg.Blue}${JSON.stringify(fileTypeObj)}${colors.fg.White}, Is video?: ${mimeType.startsWith('video') ? colors.fg.Green + 'Yes' : colors.fg.Red + 'No'}`, colors.Reset);
+        console.log(`${counter}) ${colors.fg.Magenta}${filename}${colors.fg.White}: ${colors.fg.Blue}${JSON.stringify(mimeFileTypeObj)}${colors.fg.White}, Is video?: ${mimeType.startsWith('video') ? colors.fg.Green + 'Yes' : colors.fg.Red + 'No'}`, colors.Reset);
     });
 }
 
-function findFileType(fileName){
+function findMimeFileType(fileName){
     let buffer = readChunk.sync(fileName, 0, 4100);
     return fileType(buffer);
+}
+
+function findFileExtension(fileName){
+    return path.extname(fileName);
 }
 
 main();
